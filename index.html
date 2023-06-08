@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Women's Store</title>
+    <style>
+        /* CSS for slideshow */
+        .slideshow {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+        .slideshow img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        
+        /* CSS for form */
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="tel"],
+        .form-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow">
+        <img src="image1.jpg" alt="Slideshow Image 1">
+        <img src="image2.jpg" alt="Slideshow Image 2">
+        <img src="image3.jpg" alt="Slideshow Image 3">
+    </div>
+
+    <div class="form-container">
+        <form id="order-form" action="#" method="POST">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="text" name="address" placeholder="Address" required>
+            <input type="tel" name="phone" placeholder="Phone Number" required>
+            <input type="submit" value="Order Now">
+        </form>
+    </div>
+
+    <script>
+        // Function to send order information to Telegram bot
+        function sendOrderToTelegram(orderData) {
+            // Make an AJAX request to your Telegram bot API endpoint
+            // Replace `YOUR_BOT_API_URL` with the actual URL of your Telegram bot API
+            // Replace `YOUR_CHAT_ID` with the actual chat ID where you want to receive the orders
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "5723460903:AAHHwTvgGsRiVxnXIGw8AJ1_y1H7quM6aRw/sendMessage", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Order sent to Telegram");
+                }
+            };
+            xhr.send("chat_id=2003772591&text=" + encodeURIComponent(orderData));
+        }
+
+        // Handle form submission
+        document.getElementById("order-form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            var form = event.target;
+            var formData = new FormData(form);
+
+            var orderData = "";
+            for (var pair of formData.entries()) {
+                orderData += pair[0] + ": " + pair[1] + "\n";
+            }
+
+            sendOrderToTelegram(orderData);
+            form.reset(); // Reset the form fields
+        });
+    </script>
+</body>
+</html>
